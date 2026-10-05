@@ -1,7 +1,1206 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
 <head>
+    <meta charset="UTF-8"><!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestre da Gramática - Quiz de Língua Portuguesa</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        },
+                        accent: {
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fontes e Ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Outfit', sans-serif; }
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Canvas para Confetes -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Header NAVEGAÇÃO -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div onclick="showScreen('home')" class="flex items-center gap-3 cursor-pointer group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-emerald-500 flex items-center justify-center text-white text-xl font-black shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid font-bold">PT</i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg leading-none bg-gradient-to-r from-indigo-400 via-emerald-400 to-teal-300 bg-clip-text text-transparent">
+                        Mestre da Gramática
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">Quiz de Língua Portuguesa</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <!-- Toggle Som -->
+                <button onclick="toggleSound()" id="sound-btn" title="Alternar som" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
+                    <i id="sound-icon" class="fa-solid fa-volume-high"></i>
+                </button>
+
+                <!-- Toggle Tema -->
+                <button onclick="toggleTheme()" title="Alternar Modo Escuro/Claro" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
+                    <i id="theme-icon" class="fa-solid fa-sun text-amber-400"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (Telas do App) -->
+    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col justify-center">
+
+        <!-- ================= TELA 1: HOME ================= -->
+        <section id="screen-home" class="space-y-8 py-4">
+            <div class="text-center max-w-2xl mx-auto space-y-4">
+                <span class="px-3 py-1 text-xs font-semibold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                    Aprenda e Domine a Gramática
+                </span>
+                <h2 class="text-4xl md:text-5xl font-black text-white tracking-tight">
+                    Desafie seu conhecimento na Língua Portuguesa
+                </h2>
+                <p class="text-slate-400 text-base md:text-lg">
+                    Aprenda regras de Crase, Ortografia, Concordância, Regência e Porquês com explicações pedagógicas imediatas.
+                </p>
+            </div>
+
+            <!-- Modos de Jogo Card -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <!-- Modo Solo -->
+                <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700 hover:border-indigo-500/50 transition duration-300 flex flex-col justify-between group shadow-xl">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Modo Solo</h3>
+                            <p class="text-slate-400 text-sm mt-1">Pratique no seu ritmo, escolha categorias específicas e veja explicações detalhadas para cada resposta.</p>
+                        </div>
+                    </div>
+                    <button onclick="startSoloConfig()" class="mt-6 w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Jogar Agora
+                    </button>
+                </div>
+
+                <!-- Modo Sala Privada -->
+                <div class="bg-slate-800/80 rounded-2xl p-6 border border-slate-700 hover:border-emerald-500/50 transition duration-300 flex flex-col justify-between group shadow-xl">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Sala Privada / Anfitrião</h3>
+                            <p class="text-slate-400 text-sm mt-1">Crie uma sala com código exclusivo (ex: #PORT-8921), defina regras e convide amigos para competir!</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-2 gap-3">
+                        <button onclick="openCreateRoomModal()" class="py-3.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i> Criar Sala
+                        </button>
+                        <button onclick="openJoinRoomModal()" class="py-3.5 px-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-bold rounded-xl transition text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i> Entrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badges de Categorias Disponíveis -->
+            <div class="max-w-4xl mx-auto pt-4 border-t border-slate-800">
+                <p class="text-xs uppercase tracking-wider text-slate-500 font-bold text-center mb-3">Tópicos Gramaticais Incluídos</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700"><i class="fa-solid fa-hashtag text-indigo-400 mr-1"></i> Crase</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700"><i class="fa-solid fa-spell-check text-emerald-400 mr-1"></i> Ortografia</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700"><i class="fa-solid fa-link text-teal-400 mr-1"></i> Concordância</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700"><i class="fa-solid fa-circle-question text-amber-400 mr-1"></i> Porquês</span>
+                    <span class="px-3 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold border border-slate-700"><i class="fa-solid fa-arrows-split-up-and-left text-purple-400 mr-1"></i> Regência</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TELA 2: CONFIGURAÇÃO SOLO ================= -->
+        <section id="screen-solo-config" class="hidden max-w-2xl mx-auto w-full bg-slate-800/90 rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl space-y-6">
+            <div class="flex items-center gap-3 border-b border-slate-700 pb-4">
+                <button onclick="showScreen('home')" class="w-8 h-8 rounded-lg bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h3 class="text-2xl font-black text-white">Configurar Partida Solo</h3>
+            </div>
+
+            <!-- Seleção de Categorias -->
+            <div class="space-y-3">
+                <label class="text-sm font-bold text-slate-300 uppercase tracking-wider block">Categorias Gramaticais</label>
+                <div class="grid grid-cols-2 gap-2" id="category-checkboxes">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <!-- Número de Questões -->
+            <div class="space-y-2">
+                <label class="text-sm font-bold text-slate-300 uppercase tracking-wider block">Quantidade de Perguntas</label>
+                <select id="config-questions-count" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                    <option value="5">5 Perguntas (Rápido)</option>
+                    <option value="10" selected>10 Perguntas (Recomendado)</option>
+                    <option value="15">15 Perguntas (Completo)</option>
+                </select>
+            </div>
+
+            <!-- Tempo por Pergunta -->
+            <div class="space-y-2">
+                <label class="text-sm font-bold text-slate-300 uppercase tracking-wider block">Tempo limite por pergunta</label>
+                <select id="config-timer-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                    <option value="0">Sem tempo limite (Estudo relaxado)</option>
+                    <option value="20">20 Segundos</option>
+                    <option value="30" selected>30 Segundos</option>
+                    <option value="45">45 Segundos</option>
+                </select>
+            </div>
+
+            <button onclick="startQuiz('solo')" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white font-black text-lg rounded-xl shadow-xl transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-bolt"></i> Iniciar Quiz Now
+            </button>
+        </section>
+
+        <!-- ================= TELA 3: LOBBY DE SALA PRIVADA ================= -->
+        <section id="screen-room-lobby" class="hidden max-w-3xl mx-auto w-full bg-slate-800/90 rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-700 pb-4">
+                <div>
+                    <span class="text-xs uppercase font-bold text-emerald-400 tracking-wider">Sala de Espera Ativa</span>
+                    <h3 class="text-3xl font-black text-white flex items-center gap-3">
+                        Código: <span id="lobby-room-code" class="font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/30">#PORT-8921</span>
+                    </h3>
+                </div>
+                <button onclick="copyRoomCode()" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm font-bold rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-copy"></i> Copiar Código
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Regras da Sala -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-3">
+                    <h4 class="text-xs uppercase font-bold text-slate-400">Regras da Partida</h4>
+                    <ul class="text-xs text-slate-300 space-y-2">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-clock text-indigo-400"></i> <span id="lobby-rule-time">30 segundos por questão</span></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-list-check text-emerald-400"></i> <span id="lobby-rule-count">10 perguntas</span></li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-crown text-amber-400"></i> <span id="lobby-rule-host">Anfitrião: Você</span></li>
+                    </ul>
+                </div>
+
+                <!-- Lista de Jogadores -->
+                <div class="md:col-span-2 bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-xs uppercase font-bold text-slate-400">Jogadores Conectados (<span id="player-count">1</span>/8)</h4>
+                        <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Aguardando</span>
+                    </div>
+
+                    <div id="player-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <!-- Gerado Dinamicamente -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="showScreen('home')" class="w-1/3 py-3.5 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition">
+                    Sair
+                </button>
+                <button onclick="startQuiz('room')" class="w-2/3 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-lg rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-play"></i> Iniciar Desafio na Sala
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TELA 4: QUIZ ATIVO ================= -->
+        <section id="screen-quiz" class="hidden max-w-3xl mx-auto w-full space-y-6">
+            <!-- Topbar de Progresso -->
+            <div class="bg-slate-800/90 rounded-2xl p-4 border border-slate-700 shadow-lg space-y-3">
+                <div class="flex items-center justify-between text-sm">
+                    <span id="quiz-category-badge" class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-xs border border-indigo-500/30">
+                        Crase
+                    </span>
+                    <div class="flex items-center gap-4">
+                        <span class="font-bold text-slate-300"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i> Pontos: <span id="quiz-score" class="text-white">0</span></span>
+                        <span id="timer-wrapper" class="font-mono font-bold text-emerald-400 bg-slate-900 px-3 py-1 rounded-lg border border-slate-700 flex items-center gap-2">
+                            <i class="fa-solid fa-stopwatch"></i> <span id="quiz-timer">30s</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Barra de Progresso Geral -->
+                <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden">
+                    <div id="quiz-progress-bar" class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full w-0 transition-all duration-300"></div>
+                </div>
+                
+                <div class="flex justify-between text-xs text-slate-400 font-semibold">
+                    <span>Questão <span id="quiz-current-num">1</span> de <span id="quiz-total-num">10</span></span>
+                    <span id="quiz-streak" class="text-amber-400 font-bold hidden"><i class="fa-solid fa-fire mr-1"></i> Sequência: 0</span>
+                </div>
+            </div>
+
+            <!-- Pergunta & Opções -->
+            <div class="bg-slate-800/90 rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl space-y-6">
+                <h3 id="quiz-question-text" class="text-xl md:text-2xl font-extrabold text-white leading-relaxed">
+                    Carregando pergunta...
+                </h3>
+
+                <div id="quiz-options-container" class="space-y-3">
+                    <!-- Opções geradas via JS -->
+                </div>
+
+                <!-- Card de Explicação Pedagógica (Invisível no início) -->
+                <div id="quiz-feedback-card" class="hidden p-5 rounded-xl border space-y-2 transition-all">
+                    <div class="flex items-center gap-2 font-bold text-sm" id="feedback-header">
+                        <!-- Ícone e Título do Resultado -->
+                    </div>
+                    <p id="feedback-explanation" class="text-sm leading-relaxed text-slate-200">
+                        <!-- Justificativa gramatical detalhada -->
+                    </p>
+                </div>
+
+                <!-- Botão de Próxima Questão -->
+                <button id="btn-next-question" onclick="nextQuestion()" class="hidden w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-lg rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    Próxima Questão <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TELA 5: RESULTADO FINAL E REVISÃO ================= -->
+        <section id="screen-results" class="hidden max-w-4xl mx-auto w-full space-y-8 py-4">
+            <!-- Header do Resultado -->
+            <div class="bg-slate-800/90 rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl text-center space-y-6">
+                <div id="medal-container" class="inline-flex p-4 rounded-full bg-slate-900 border-2 border-amber-400 text-5xl text-amber-400 shadow-xl shadow-amber-500/10">
+                    <i class="fa-solid fa-award"></i>
+                </div>
+
+                <div>
+                    <h2 id="result-title" class="text-3xl font-black text-white">Excelente Desempenho!</h2>
+                    <p id="result-subtitle" class="text-slate-400 text-sm mt-1">Você demonstrou ótimo domínio das regras gramaticais.</p>
+                </div>
+
+                <!-- Grid de Métricas -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs uppercase font-bold text-slate-400">Pontuação</span>
+                        <p id="result-score" class="text-2xl font-black text-emerald-400">0</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs uppercase font-bold text-slate-400">Acertos</span>
+                        <p id="result-accuracy" class="text-2xl font-black text-indigo-400">0/10</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs uppercase font-bold text-slate-400">Aproveitamento</span>
+                        <p id="result-percent" class="text-2xl font-black text-amber-400">0%</p>
+                    </div>
+                    <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-700">
+                        <span class="text-xs uppercase font-bold text-slate-400">Tempo Total</span>
+                        <p id="result-time" class="text-2xl font-black text-teal-400">0s</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3 pt-2">
+                    <button onclick="showScreen('home')" class="py-3 px-6 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition">
+                        <i class="fa-solid fa-house mr-2"></i> Menu Principal
+                    </button>
+                    <button onclick="startSoloConfig()" class="py-3 px-6 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Jogar Novamente
+                    </button>
+                </div>
+            </div>
+
+            <!-- Gabarito e Revisão Detalhada -->
+            <div class="bg-slate-800/90 rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl space-y-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-700 pb-4">
+                    <i class="fa-solid fa-book-open text-indigo-400"></i> Revisão Comentada do Gabarito
+                </h3>
+
+                <div id="gabarito-list" class="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                    <!-- Gerado Dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= MODAIS GLOBAIS ================= -->
+
+    <!-- Modal 1: Criar Sala Privada -->
+    <div id="modal-create-room" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-400"></i> Criar Sala Privada
+                </h3>
+                <button onclick="closeCreateRoomModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Seu Nome de Anfitrião</label>
+                    <input type="text" id="create-host-name" value="Anfitrião_Professor" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Perguntas por Partida</label>
+                    <select id="create-questions-count" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
+                        <option value="5">5 Questões</option>
+                        <option value="10" selected>10 Questões</option>
+                        <option value="15">15 Questões</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Tempo por Questão</label>
+                    <select id="create-timer-select" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500">
+                        <option value="20">20 segundos</option>
+                        <option value="30" selected>30 segundos</option>
+                        <option value="45">45 segundos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeCreateRoomModal()" class="w-1/2 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition">Cancelar</button>
+                <button onclick="confirmCreateRoom()" class="w-1/2 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg transition">Criar Sala</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Entrar em Sala Existente -->
+    <div id="modal-join-room" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket text-indigo-400"></i> Entrar em Sala
+                </h3>
+                <button onclick="closeJoinRoomModal()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Código da Sala</label>
+                    <input type="text" id="join-room-code-input" placeholder="ex: #PORT-8921" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono uppercase focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-300 block mb-1">Seu Apelido</label>
+                    <input type="text" id="join-player-name" placeholder="Ex: Estudante123" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeJoinRoomModal()" class="w-1/2 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-xl transition">Cancelar</button>
+                <button onclick="confirmJoinRoom()" class="w-1/2 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition">Entrar na Sala</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900 py-4 text-center text-xs text-slate-500">
+        <p>Mestre da Gramática &copy; 2026 - Desenvolvido para estudo prático de Língua Portuguesa.</p>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT INTEGRADA -->
+    <script>
+        /* ==========================================================================
+           1. BANCO DE DADOS DE QUESTÕES ENRIQUECIDO E CATEGORIZADO
+           ========================================================================== */
+        const QUESTION_BANK = [
+            // CRASE
+            {
+                id: 1,
+                category: "Crase",
+                question: "Assinale a alternativa em que o uso do acento indicativo de crase é OBRIGATÓRIO:",
+                options: [
+                    "Chegamos à cidade ao entardecer.",
+                    "Entreguei o livro a ele ontem.",
+                    "Refiro-me a todas as alunas da sala.",
+                    "Fomos a pé até o mercado."
+                ],
+                correct: 0,
+                explanation: "O verbo 'chegar' rege preposição 'a' (chegar a) e o substantivo feminino 'cidade' admite artigo 'a'. A fusão resulta em 'à cidade'. Não há crase antes de pronome masculino ('ele'), pronome indefinido/plural sem artigo ('todas') ou expressão masculina ('pé')."
+            },
+            {
+                id: 2,
+                category: "Crase",
+                question: "Em qual das opções a crase está empregada de forma INCORRETA?",
+                options: [
+                    "Ela começou à chorar copiosamente.",
+                    "Dirigi-me à professora para tirar dúvidas.",
+                    "Às vezes prefiro estudar à noite.",
+                    "Solicitamos audiência à diretora."
+                ],
+                correct: 0,
+                explanation: "Nunca ocorre crase antes de verbos no infinitivo (como 'chorar'), pois verbos não admitem artigo definido feminino."
+            },
+            {
+                id: 3,
+                category: "Crase",
+                question: "Preencha adequadamente: 'Cheguei ___ escola ___ duas horas da tarde e fui ___ pé até em casa.'",
+                options: [
+                    "à / às / a",
+                    "a / as / à",
+                    "à / as / a",
+                    "a / às / à"
+                ],
+                correct: 0,
+                explanation: "1) 'Cheguei à escola' (quem chega, chega 'a' + artigo 'a' da escola); 2) 'às duas horas' (crase obrigatória na indicação de horas exatas); 3) 'a pé' (não ocorre crase antes de palavra masculina)."
+            },
+
+            // ORTOGRAFIA
+            {
+                id: 4,
+                category: "Ortografia",
+                question: "Assinale a alternativa em que TODAS as palavras estão grafadas corretamente:",
+                options: [
+                    "Exceção, pretensão, paralisação",
+                    "Eceção, pretenção, paralização",
+                    "Exceção, pretenção, paralisação",
+                    "Exceção, pretensão, paralização"
+                ],
+                correct: 0,
+                explanation: "'Exceção' é grafado com XC e Ç. 'Pretensão' vem do verbo pretender (sufixo -são). 'Paralisação' deriva de paralisar (que possui 's' em seu radical)."
+            },
+            {
+                id: 5,
+                category: "Ortografia",
+                question: "Qual das opções apresenta a palavra grafada estritamente conforme a norma-padrão?",
+                options: [
+                    "Beneficente",
+                    "Beneficiente",
+                    "Benificiente",
+                    "Benificente"
+                ],
+                correct: 0,
+                explanation: "A forma correta é 'beneficente' (terminada em -ente). A grafia 'beneficiente' é uma hipercorreção comum, porém incorreta."
+            },
+
+            // CONCORDÂNCIA
+            {
+                id: 6,
+                category: "Concordância",
+                question: "Assinale a frase que atende plenamente às regras de concordância verbal:",
+                options: [
+                    "Há muitos problemas a serem resolvidos.",
+                    "Fazem dez anos que não visito minha cidade.",
+                    "Houveram muitos imprevistos na reunião.",
+                    "Sobrou duas fatias de bolo na mesa."
+                ],
+                correct: 0,
+                explanation: "'Há' (verbo haver no sentido de existir) é impessoal e fica na 3ª pessoa do singular. Verbos de tempo decorrido como 'Fazer' também são impessoais ('Faz dez anos', incorreto 'Fazem'). Em D, o correto seria 'Sobraram duas fatias'."
+            },
+            {
+                id: 7,
+                category: "Concordância",
+                question: "Indique a alternativa com concordância nominal CORRETA:",
+                options: [
+                    "Elas mesmas organizaram todo o evento.",
+                    "Segue anexo as documentações solicitadas.",
+                    "É proibido a entrada de pessoas estranhas.",
+                    "Ela estava meia cansada ao final do dia."
+                ],
+                correct: 0,
+                explanation: "'Mesmas' concorda com 'Elas'. Em B, deveria ser 'Seguem anexas'. Em C, com o artigo 'a', exige-se 'É proibida a entrada'. Em D, 'meio' como advérbio de intensidade é invariável ('meio cansada')."
+            },
+
+            // PORQUÊS
+            {
+                id: 8,
+                category: "Porquês",
+                question: "Assinale a opção que preenche corretamente: '_____ você não veio? Não entendi o _____ do seu atraso.'",
+                options: [
+                    "Por que / porquê",
+                    "Porque / por que",
+                    "Por quê / porque",
+                    "Porquê / por que"
+                ],
+                correct: 0,
+                explanation: "'Por que' (separado/sem acento) é usado no início/meio de perguntas (por qual razão). 'Porquê' (junto/com acento) funciona como substantivo (antecedido por artigo 'o')."
+            },
+            {
+                id: 9,
+                category: "Porquês",
+                question: "Qual frase emprega o termo 'por quê' CORRETAMENTE?",
+                options: [
+                    "Você não comeu nada. Por quê?",
+                    "Não fui à aula por quê estava doente.",
+                    "Gostaria de saber por quê você se atrasou.",
+                    "Este é o por quê de nossa decisão."
+                ],
+                correct: 0,
+                explanation: "'Por quê' (separado e com acento circunflexo) deve ser empregado no final de frases interrogativas ou isolado, recebendo a tônica do ponto de interrogação/final."
+            },
+
+            // REGÊNCIA
+            {
+                id: 10,
+                category: "Regência",
+                question: "Assinale a alternativa que atende à regência verbal culta do verbo 'assistir':",
+                options: [
+                    "Assistimos ao filme em uma tela gigante.",
+                    "Assistimos o filme em uma tela gigante.",
+                    "O médico assistiu ao paciente com dedicação.",
+                    "Nós assistimos na cidade de São Paulo."
+                ],
+                correct: 0,
+                explanation: "O verbo 'assistir' no sentido de 'ver/presenciar' exige a preposição 'a' (transitivo indireto: assistir AO filme). No sentido de 'prestar assistência/ajudar', é transitivo direto (assistir O paciente)."
+            },
+            {
+                id: 11,
+                category: "Regência",
+                question: "Complete: 'O professor simpatizou _____ as ideias e aspirava _____ um cargo superior.'",
+                options: [
+                    "com / a",
+                    "de / por",
+                    "com / de",
+                    "por / a"
+                ],
+                correct: 0,
+                explanation: "1) 'Simpatizar' rege a preposição 'com' (simpatizar com algo/alguém). 2) 'Aspirar' no sentido de 'desejar/almejar' rege a preposição 'a' (aspirar a um cargo)."
+            }
+        ];
+
+        /* ==========================================================================
+           2. ESTADO DA APLICAÇÃO (STATE MANAGEMENT)
+           ========================================================================== */
+        const state = {
+            theme: 'dark',
+            soundEnabled: true,
+            mode: 'solo', // 'solo' ou 'room'
+            categories: ["Crase", "Ortografia", "Concordância", "Porquês", "Regência"],
+            selectedCategories: [],
+            questionsCount: 10,
+            timerPerQuestion: 30, // 0 = sem tempo
+            
+            // Dados da partida
+            currentQuestions: [],
+            currentIndex: 0,
+            score: 0,
+            streak: 0,
+            userAnswers: [], // Armazena { question, selectedOption, isCorrect, timeSpent }
+            
+            // Timer ativo
+            timeRemaining: 0,
+            timerInterval: null,
+            startTimeQuestion: null,
+            totalTimeSpent: 0,
+
+            // Dados de Sala Privada (Simulado)
+            roomCode: '#PORT-8921',
+            hostName: 'Anfitrião',
+            players: []
+        };
+
+        /* ==========================================================================
+           3. SINTETIZADOR DE ÁUDIO NATIVO (WEB AUDIO API - SEM ARQUIVOS EXTERNOS)
+           ========================================================================== */
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!state.soundEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+
+                if (type === 'correct') {
+                    // Nota tripla ascendente alegre
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'wrong') {
+                    // Tom grave em Dissonância
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.setValueAtTime(140, now + 0.1);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                } else if (type === 'click') {
+                    // Click suave
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'win') {
+                    // Fanfarra de Vitória
+                    const notes = [523.25, 659.25, 783.99, 1046.50];
+                    notes.forEach((freq, idx) => {
+                        const subOsc = audioCtx.createOscillator();
+                        const subGain = audioCtx.createGain();
+                        subOsc.connect(subGain);
+                        subGain.connect(audioCtx.destination);
+                        subOsc.frequency.value = freq;
+                        subGain.gain.setValueAtTime(0.15, now + idx * 0.1);
+                        subGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.25);
+                        subOsc.start(now + idx * 0.1);
+                        subOsc.stop(now + idx * 0.1 + 0.25);
+                    });
+                }
+            } catch (e) {
+                console.error("Audio error:", e);
+            }
+        }
+
+        /* ==========================================================================
+           4. ENGINE NATIVA DE CONFETI EM CANVAS
+           ========================================================================== */
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#6366f1', '#22c55e', '#eab308', '#ec4899', '#3b82f6'];
+
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.7) * 12,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 100,
+                    opacity: 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+
+                particles.forEach(p => {
+                    if (p.life > 0) {
+                        active = true;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.2; // Gravidade
+                        p.life--;
+                        p.opacity = p.life / 100;
+
+                        ctx.fillStyle = p.color;
+                        ctx.globalAlpha = p.opacity;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                if (active) requestAnimationFrame(animate);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            animate();
+        }
+
+        /* ==========================================================================
+           5. INTERFAZ E NAVEGAÇÃO ENTRE TELAS
+           ========================================================================== */
+        function showScreen(screenId) {
+            playSound('click');
+            ['screen-home', 'screen-solo-config', 'screen-room-lobby', 'screen-quiz', 'screen-results'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.className = 'fa-solid fa-moon text-slate-700';
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.className = 'fa-solid fa-sun text-amber-400';
+            }
+            playSound('click');
+        }
+
+        function toggleSound() {
+            state.soundEnabled = !state.soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (state.soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-emerald-400';
+                playSound('click');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+            }
+        }
+
+        /* ==========================================================================
+           6. LÓGICA DO MODO SOLO E SALA PRIVADA
+           ========================================================================== */
+        function startSoloConfig() {
+            const container = document.getElementById('category-checkboxes');
+            container.innerHTML = '';
+
+            state.categories.forEach(cat => {
+                const label = document.createElement('label');
+                label.className = "flex items-center gap-3 bg-slate-900 border border-slate-700 p-3 rounded-xl cursor-pointer hover:border-indigo-500 transition";
+                label.innerHTML = `
+                    <input type="checkbox" value="${cat}" checked class="w-4 h-4 accent-indigo-500 rounded">
+                    <span class="text-sm font-semibold text-slate-200">${cat}</span>
+                `;
+                container.appendChild(label);
+            });
+
+            showScreen('screen-solo-config');
+        }
+
+        // Funções Modais Globais Solicitadas
+        function openCreateRoomModal() {
+            playSound('click');
+            document.getElementById('modal-create-room').classList.remove('hidden');
+        }
+
+        function closeCreateRoomModal() {
+            playSound('click');
+            document.getElementById('modal-create-room').classList.add('hidden');
+        }
+
+        function openJoinRoomModal() {
+            playSound('click');
+            document.getElementById('modal-join-room').classList.remove('hidden');
+        }
+
+        function closeJoinRoomModal() {
+            playSound('click');
+            document.getElementById('modal-join-room').classList.add('hidden');
+        }
+
+        function confirmCreateRoom() {
+            const host = document.getElementById('create-host-name').value || 'Anfitrião';
+            const questions = parseInt(document.getElementById('create-questions-count').value);
+            const timer = parseInt(document.getElementById('create-timer-select').value);
+
+            const randomCode = '#PORT-' + Math.floor(1000 + Math.random() * 9000);
+            state.roomCode = randomCode;
+            state.hostName = host;
+            state.questionsCount = questions;
+            state.timerPerQuestion = timer;
+            state.mode = 'room';
+
+            // Jogadores Simulados no Lobby
+            state.players = [
+                { name: host + " (Anfitrião)", isHost: true },
+                { name: "Ana_Gramatica", isHost: false },
+                { name: "Lucas_Sintaxe", isHost: false }
+            ];
+
+            updateLobbyUI();
+            closeCreateRoomModal();
+            showScreen('screen-room-lobby');
+        }
+
+        function confirmJoinRoom() {
+            const code = document.getElementById('join-room-code-input').value.toUpperCase() || '#PORT-8921';
+            const name = document.getElementById('join-player-name').value || 'Desafiante';
+
+            state.roomCode = code.startsWith('#') ? code : '#' + code;
+            state.hostName = "Professor_Online";
+            state.mode = 'room';
+
+            state.players = [
+                { name: "Professor_Online (Anfitrião)", isHost: true },
+                { name: name + " (Você)", isHost: false }
+            ];
+
+            updateLobbyUI();
+            closeJoinRoomModal();
+            showScreen('screen-room-lobby');
+        }
+
+        function updateLobbyUI() {
+            document.getElementById('lobby-room-code').innerText = state.roomCode;
+            document.getElementById('lobby-rule-time').innerText = state.timerPerQuestion === 0 ? 'Sem tempo limite' : `${state.timerPerQuestion} segundos por questão`;
+            document.getElementById('lobby-rule-count').innerText = `${state.questionsCount} perguntas`;
+            document.getElementById('lobby-rule-host').innerText = `Anfitrião: ${state.hostName}`;
+
+            const playerList = document.getElementById('player-list');
+            playerList.innerHTML = '';
+            document.getElementById('player-count').innerText = state.players.length;
+
+            state.players.forEach(p => {
+                const item = document.createElement('div');
+                item.className = "flex items-center gap-2 p-2.5 bg-slate-800 rounded-lg border border-slate-700/60 text-xs font-bold text-slate-200";
+                item.innerHTML = `<i class="fa-solid fa-user-circle text-base ${p.isHost ? 'text-amber-400' : 'text-indigo-400'}"></i> ${p.name}`;
+                playerList.appendChild(item);
+            });
+        }
+
+        function copyRoomCode() {
+            navigator.clipboard.writeText(state.roomCode);
+            playSound('click');
+            alert(`Código ${state.roomCode} copiado para a área de transferência!`);
+        }
+
+        /* ==========================================================================
+           7. EXECUÇÃO DO QUIZ E LÓGICA PEDAGÓGICA
+           ========================================================================== */
+        function startQuiz(mode) {
+            state.mode = mode;
+
+            if (mode === 'solo') {
+                const checked = Array.from(document.querySelectorAll('#category-checkboxes input:checked')).map(cb => cb.value);
+                state.selectedCategories = checked.length > 0 ? checked : state.categories;
+                state.questionsCount = parseInt(document.getElementById('config-questions-count').value);
+                state.timerPerQuestion = parseInt(document.getElementById('config-timer-select').value);
+            }
+
+            // Filtrar e Embaralhar Questões
+            let pool = QUESTION_BANK;
+            if (state.selectedCategories.length > 0) {
+                pool = QUESTION_BANK.filter(q => state.selectedCategories.includes(q.category));
+            }
+            if (pool.length === 0) pool = QUESTION_BANK;
+
+            // Embaralhar
+            const shuffled = [...pool].sort(() => 0.5 - Math.random());
+            state.currentQuestions = shuffled.slice(0, Math.min(state.questionsCount, shuffled.length));
+
+            state.currentIndex = 0;
+            state.score = 0;
+            state.streak = 0;
+            state.userAnswers = [];
+            state.totalTimeSpent = 0;
+
+            showScreen('screen-quiz');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            clearInterval(state.timerInterval);
+
+            const q = state.currentQuestions[state.currentIndex];
+            const total = state.currentQuestions.length;
+
+            document.getElementById('quiz-category-badge').innerText = q.category;
+            document.getElementById('quiz-score').innerText = state.score;
+            document.getElementById('quiz-current-num').innerText = state.currentIndex + 1;
+            document.getElementById('quiz-total-num').innerText = total;
+
+            // Barra de Progresso
+            const progress = ((state.currentIndex) / total) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
+
+            // Streaks
+            const streakEl = document.getElementById('quiz-streak');
+            if (state.streak > 1) {
+                streakEl.classList.remove('hidden');
+                streakEl.innerHTML = `<i class="fa-solid fa-fire text-amber-400 mr-1"></i> Sequência: ${state.streak}`;
+            } else {
+                streakEl.classList.add('hidden');
+            }
+
+            document.getElementById('quiz-question-text').innerText = q.question;
+
+            // Renderizar Opções
+            const container = document.getElementById('quiz-options-container');
+            container.innerHTML = '';
+
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "option-btn w-full p-4 bg-slate-900/90 border border-slate-700/80 hover:border-indigo-500 rounded-xl text-left text-slate-200 hover:text-white transition flex items-center gap-3 font-medium text-sm md:text-base group";
+                btn.onclick = () => handleAnswerSelect(idx);
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 font-bold flex items-center justify-center text-xs border border-slate-700 group-hover:bg-indigo-600 group-hover:text-white transition">
+                        ${optionLetters[idx]}
+                    </span>
+                    <span class="flex-grow">${opt}</span>
+                `;
+                container.appendChild(btn);
+            });
+
+            // Esconder Card de Feedback e Botão Próximo
+            document.getElementById('quiz-feedback-card').classList.add('hidden');
+            document.getElementById('btn-next-question').classList.add('hidden');
+
+            // Iniciar Contador de Tempo
+            state.startTimeQuestion = Date.now();
+            if (state.timerPerQuestion > 0) {
+                document.getElementById('timer-wrapper').classList.remove('hidden');
+                state.timeRemaining = state.timerPerQuestion;
+                document.getElementById('quiz-timer').innerText = `${state.timeRemaining}s`;
+
+                state.timerInterval = setInterval(() => {
+                    state.timeRemaining--;
+                    document.getElementById('quiz-timer').innerText = `${state.timeRemaining}s`;
+                    if (state.timeRemaining <= 0) {
+                        clearInterval(state.timerInterval);
+                        handleTimeUp();
+                    }
+                }, 1000);
+            } else {
+                document.getElementById('timer-wrapper').classList.add('hidden');
+            }
+        }
+
+        function handleAnswerSelect(selectedIndex) {
+            clearInterval(state.timerInterval);
+            const timeSpentSecs = Math.round((Date.now() - state.startTimeQuestion) / 1000);
+            state.totalTimeSpent += timeSpentSecs;
+
+            const q = state.currentQuestions[state.currentIndex];
+            const isCorrect = selectedIndex === q.correct;
+
+            // Atualizar Pontos
+            if (isCorrect) {
+                state.score += 100 + (state.streak * 20);
+                state.streak++;
+                playSound('correct');
+                triggerConfetti();
+            } else {
+                state.streak = 0;
+                playSound('wrong');
+            }
+
+            state.userAnswers.push({
+                question: q,
+                selectedIndex: selectedIndex,
+                isCorrect: isCorrect,
+                timeSpent: timeSpentSecs
+            });
+
+            // Desabilitar botões de opção e aplicar cores
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.remove('hover:border-indigo-500');
+
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-200');
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            });
+
+            // Mostrar Feedback Pedagógico Imediato
+            const feedbackCard = document.getElementById('quiz-feedback-card');
+            const feedbackHeader = document.getElementById('feedback-header');
+            const feedbackExplanation = document.getElementById('feedback-explanation');
+
+            feedbackCard.classList.remove('hidden');
+
+            if (isCorrect) {
+                feedbackCard.className = "p-5 rounded-xl border bg-emerald-950/40 border-emerald-500/50 space-y-2";
+                feedbackHeader.className = "flex items-center gap-2 font-bold text-sm text-emerald-400";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-circle-check text-base"></i> Resposta Correta!`;
+            } else {
+                feedbackCard.className = "p-5 rounded-xl border bg-rose-950/40 border-rose-500/50 space-y-2";
+                feedbackHeader.className = "flex items-center gap-2 font-bold text-sm text-rose-400";
+                feedbackHeader.innerHTML = `<i class="fa-solid fa-circle-xmark text-base"></i> Resposta Incorreta`;
+            }
+
+            feedbackExplanation.innerHTML = `<strong class="text-white block mb-1">💡 Explicação Gramatical:</strong> ${q.explanation}`;
+
+            document.getElementById('btn-next-question').classList.remove('hidden');
+        }
+
+        function handleTimeUp() {
+            playSound('wrong');
+            const q = state.currentQuestions[state.currentIndex];
+            state.streak = 0;
+
+            state.userAnswers.push({
+                question: q,
+                selectedIndex: -1, // Tempo esgotado
+                isCorrect: false,
+                timeSpent: state.timerPerQuestion
+            });
+
+            state.totalTimeSpent += state.timerPerQuestion;
+
+            // Destaque visual
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.correct) {
+                    btn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-200');
+                } else {
+                    btn.classList.add('opacity-40');
+                }
+            });
+
+            const feedbackCard = document.getElementById('quiz-feedback-card');
+            feedbackCard.classList.remove('hidden');
+            feedbackCard.className = "p-5 rounded-xl border bg-amber-950/40 border-amber-500/50 space-y-2";
+            
+            document.getElementById('feedback-header').className = "flex items-center gap-2 font-bold text-sm text-amber-400";
+            document.getElementById('feedback-header').innerHTML = `<i class="fa-solid fa-clock text-base"></i> Tempo Esgotado!`;
+            document.getElementById('feedback-explanation').innerHTML = `<strong class="text-white block mb-1">💡 Explicação Gramatical:</strong> ${q.explanation}`;
+
+            document.getElementById('btn-next-question').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            playSound('click');
+            state.currentIndex++;
+            if (state.currentIndex < state.currentQuestions.length) {
+                renderQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        /* ==========================================================================
+           8. TELA FINAL, RESULTADOS E GABARITO
+           ========================================================================== */
+        function finishQuiz() {
+            playSound('win');
+            triggerConfetti();
+
+            const total = state.currentQuestions.length;
+            const correctCount = state.userAnswers.filter(a => a.isCorrect).length;
+            const percentage = Math.round((correctCount / total) * 100);
+
+            // Título e Medalha conforme o desempenho
+            const medalContainer = document.getElementById('medal-container');
+            const resultTitle = document.getElementById('result-title');
+            const resultSubtitle = document.getElementById('result-subtitle');
+
+            if (percentage === 100) {
+                medalContainer.innerHTML = `<i class="fa-solid fa-trophy text-amber-400"></i>`;
+                resultTitle.innerText = "🏆 Mestre Absoluto da Língua!";
+                resultSubtitle.innerText = "Parabéns! Você gabaritou todas as questões gramaticais.";
+            } else if (percentage >= 80) {
+                medalContainer.innerHTML = `<i class="fa-solid fa-award text-indigo-400"></i>`;
+                resultTitle.innerText = "🥇 Desempenho Excelente!";
+                resultSubtitle.innerText = "Você possui um vasto domínio da norma-padrão.";
+            } else if (percentage >= 60) {
+                medalContainer.innerHTML = `<i class="fa-solid fa-medal text-teal-400"></i>`;
+                resultTitle.innerText = "🥈 Bom Trabalho!";
+                resultSubtitle.innerText = "Você está no caminho certo. Revise os pontos onde errou.";
+            } else {
+                medalContainer.innerHTML = `<i class="fa-solid fa-book-reader text-rose-400"></i>`;
+                resultTitle.innerText = "📚 É Hora de Praticar Mais!";
+                resultSubtitle.innerText = "Não desanime. Utilize o gabarito abaixo para fixar os conceitos.";
+            }
+
+            document.getElementById('result-score').innerText = state.score;
+            document.getElementById('result-accuracy').innerText = `${correctCount}/${total}`;
+            document.getElementById('result-percent').innerText = `${percentage}%`;
+            document.getElementById('result-time').innerText = `${state.totalTimeSpent}s`;
+
+            // Construir Lista do Gabarito Comentado
+            const gabaritoList = document.getElementById('gabarito-list');
+            gabaritoList.innerHTML = '';
+
+            state.userAnswers.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-xl border ${item.isCorrect ? 'bg-slate-900/60 border-emerald-500/30' : 'bg-slate-900/60 border-rose-500/30'} space-y-2 text-sm`;
+
+                const optionLetters = ['A', 'B', 'C', 'D'];
+                const userChoiceText = item.selectedIndex >= 0 ? `${optionLetters[item.selectedIndex]}) ${item.question.options[item.selectedIndex]}` : 'Tempo Esgotado';
+                const correctChoiceText = `${optionLetters[item.question.correct]}) ${item.question.options[item.question.correct]}`;
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <span class="font-bold text-white">${index + 1}. ${item.question.question}</span>
+                        <span class="px-2 py-0.5 text-xs font-bold rounded ${item.isCorrect ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'}">
+                            ${item.isCorrect ? 'Correto' : 'Incorreto'}
+                        </span>
+                    </div>
+                    <div class="text-xs space-y-1">
+                        <p class="${item.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">
+                            <i class="fa-solid ${item.isCorrect ? 'fa-check' : 'fa-xmark'} mr-1"></i> Sua resposta: ${userChoiceText}
+                        </p>
+                        ${!item.isCorrect ? `<p class="text-emerald-400 font-semibold"><i class="fa-solid fa-check mr-1"></i> Resposta Correta: ${correctChoiceText}</p>` : ''}
+                    </div>
+                    <div class="pt-2 border-t border-slate-800 text-xs text-slate-300">
+                        <span class="text-indigo-400 font-bold block mb-1">Justificativa Gramatical:</span>
+                        ${item.question.explanation}
+                    </div>
+                `;
+                gabaritoList.appendChild(card);
+            });
+
+            showScreen('screen-results');
+        }
+
+        // Inicialização
+        window.addEventListener('DOMContentLoaded', () => {
+            showScreen('screen-home');
+        });
+    </script>
+</body>
+</html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mestre da Gramática - Quiz de Língua Portuguesa</title>
     
