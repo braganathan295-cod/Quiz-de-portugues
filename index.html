@@ -52,16 +52,6 @@
             pointer-events: none;
             z-index: 100;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.05);
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.5);
-            border-radius: 4px;
-        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen transition-colors duration-300 flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
@@ -85,12 +75,9 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <!-- Toggle Som -->
                 <button onclick="toggleSound()" id="sound-btn" title="Alternar som" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
                     <i id="sound-icon" class="fa-solid fa-volume-high"></i>
                 </button>
-
-                <!-- Toggle Tema -->
                 <button onclick="toggleTheme()" title="Alternar Modo Escuro/Claro" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition border border-slate-700">
                     <i id="theme-icon" class="fa-solid fa-sun text-amber-400"></i>
                 </button>
@@ -98,11 +85,151 @@
         </div>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL (Telas do App) -->
-    <main class="flex-grow max-w-6xl mx-auto w-full p-4 md:p-6 flex flex-col justify-center">
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6 flex flex-col justify-center">
 
         <!-- ================= TELA 1: HOME ================= -->
-        <section id="screen-home" class="space-y-8 py-4">
-            <div class="text-center max-w-2xl mx-auto space-y-4">
+        <section id="screen-home" class="space-y-8 py-4 text-center">
+            <div class="max-w-2xl mx-auto space-y-4">
                 <span class="px-3 py-1 text-xs font-semibold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                    Aprenda e Domine a Gram
+                    Aprenda e Domine a Gramática
+                </span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white">
+                    Testa os teus conhecimentos em Português
+                </h2>
+                <p class="text-slate-400 text-base md:text-lg">
+                    Responde às perguntas, acumula pontos e descobre se és um verdadeiro Mestre da Gramática!
+                </p>
+            </div>
+
+            <div class="flex justify-center">
+                <button onclick="startQuiz()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-emerald-500 hover:from-indigo-500 hover:to-emerald-400 text-white font-bold text-lg shadow-lg shadow-indigo-500/25 transform hover:-translate-y-0.5 transition-all">
+                    Iniciar Quiz
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TELA 2: QUIZ ================= -->
+        <section id="screen-quiz" class="hidden space-y-6">
+            <div class="flex justify-between items-center bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                <span id="question-number" class="text-sm font-semibold text-indigo-400">Pergunta 1 de 5</span>
+                <span id="score-display" class="text-sm font-semibold text-emerald-400">Pontuação: 0</span>
+            </div>
+
+            <div class="bg-slate-800/80 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-6">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white">
+                    A carregar pergunta...
+                </h3>
+
+                <div id="options-container" class="grid grid-cols-1 gap-3">
+                    <!-- As opções serão inseridas via JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TELA 3: RESULTADOS ================= -->
+        <section id="screen-result" class="hidden text-center space-y-6 py-4">
+            <div class="bg-slate-800/80 p-8 rounded-2xl border border-slate-700 shadow-xl space-y-4 max-w-lg mx-auto">
+                <h2 class="text-3xl font-extrabold text-white">Quiz Concluído!</h2>
+                <p id="final-score" class="text-xl text-emerald-400 font-bold">Acertaste 0 de 5 perguntas</p>
+                <button onclick="startQuiz()" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold transition">
+                    Tentar Novamente
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        © 2026 Mestre da Gramática. Todos os direitos reservados.
+    </footer>
+
+    <!-- LÓGICA DO QUIZ (JavaScript) -->
+    <script>
+        const questions = [
+            {
+                question: "Qual é a forma correta da palavra?",
+                options: ["Exceção", "Exceção", "Exseção", "Eseção"],
+                answer: 0
+            },
+            {
+                question: "Qual frase está gramaticalmente correta?",
+                options: [
+                    "Houveram muitos problemas.",
+                    "Houve muitos problemas.",
+                    "Fazem dois anos que não o vejo.",
+                    "Menos pessoas vieram hoje."
+                ],
+                answer: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let soundEnabled = true;
+
+        function showScreen(screen) {
+            document.getElementById('screen-home').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById(`screen-${screen}`).classList.remove('hidden');
+        }
+
+        function startQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            showScreen('quiz');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            document.getElementById('question-number').innerText = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+            document.getElementById('score-display').innerText = `Pontuação: ${score}`;
+            document.getElementById('question-text').innerText = q.question;
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl bg-slate-700/50 hover:bg-slate-700 border border-slate-600/50 hover:border-indigo-500 transition font-medium text-slate-200";
+                btn.innerText = opt;
+                btn.onclick = () => selectOption(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectOption(index) {
+            if (index === questions[currentQuestion].answer) {
+                score++;
+            }
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            showScreen('result');
+            document.getElementById('final-score').innerText = `Acertaste ${score} de ${questions.length} perguntas!`;
+            if (typeof confetti === 'function' && score > 0) {
+                confetti();
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            icon.className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark';
+        }
+
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+</body>
+</html>
